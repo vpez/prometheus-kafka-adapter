@@ -37,11 +37,15 @@ func Serialize(s Serializer, req *prompb.WriteRequest) ([][]byte, error) {
 	result := [][]byte{}
 
 	for _, ts := range req.Timeseries {
-		labels := make(map[string]string, len(ts.Labels))
+	    labels_length := len(ts.Labels) + 1
+		labels := make(map[string]string, labels_length)
 
 		for _, l := range ts.Labels {
 			labels[string(model.LabelName(l.Name))] = string(model.LabelValue(l.Value))
 		}
+
+		// Add one more label
+		labels[sourceKey] = sourceValue
 
 		for _, sample := range ts.Samples {
 			epoch := time.Unix(sample.Timestamp/1000, 0).UTC()

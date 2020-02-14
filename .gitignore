@@ -12,3 +12,5 @@
 *.out
 
 prometheus-kafka-adapter
+
+*.idea/
